@@ -1,0 +1,334 @@
+# 🚀 Fahrwerkstester Pi Main Service Configuration
+# Zentrale Konfiguration für intelligente Pi-Deployment
+
+# ==================== SYSTEM CONFIGURATION ====================
+system:
+  # Allgemeine System-Einstellungen
+  heartbeat_interval: 30.0          # Heartbeat-Intervall in Sekunden
+  service_timeout: 120.0            # Timeout für Service-Starts
+  max_restart_attempts: 3           # Maximale Restart-Versuche
+  health_check_interval: 10.0       # Health-Check-Intervall
+  
+  # Pi-spezifische Optimierungen
+  pi_optimization:
+    enable_gpu_memory_split: true   # GPU-Memory für Headless-Betrieb
+    cpu_governor: "performance"     # CPU-Governor (performance, powersave, ondemand)
+    io_scheduler: "deadline"        # I/O-Scheduler für SD-Karten
+    
+  # Resource-Limits
+  resource_limits:
+    max_memory_mb: 1024            # Max. Memory pro Service
+    max_cpu_percent: 80            # Max. CPU-Nutzung
+    max_disk_usage_percent: 85     # Max. Disk-Usage-Warnung
+
+# ==================== MQTT CONFIGURATION ====================
+mqtt:
+  # Broker-Einstellungen
+  broker: "localhost"
+  port: 1883
+  username: null                    # Optional: MQTT-Username
+  password: null                    # Optional: MQTT-Passwort
+  
+  # Verbindungseinstellungen
+  keepalive: 60
+  connect_timeout: 10.0
+  reconnect_interval: 5.0
+  max_reconnect_attempts: 10
+  
+  # TLS-Einstellungen (optional)
+  tls:
+    enabled: false
+    ca_cert: null
+    cert_file: null
+    key_file: null
+    insecure: false
+  
+  # QoS-Einstellungen
+  qos:
+    system_status: 1               # System-Status-Messages
+    test_commands: 2               # Test-Kommandos
+    sensor_data: 0                 # Sensor-Daten (häufig)
+    results: 2                     # Test-Ergebnisse
+
+# ==================== CAN CONFIGURATION ====================
+can:
+  # Hardware-Einstellungen
+  interface: "can0"                 # Standard CAN-Interface
+  bitrate: 500000                  # CAN-Bitrate (500 kBit/s)
+  
+  # Fallback Virtual CAN
+  virtual_interface: "vcan0"       # Für Development/Testing
+  
+  # Timeout-Einstellungen
+  send_timeout: 1.0
+  receive_timeout: 5.0
+  
+  # Automatische Interface-Konfiguration
+  auto_configure: true             # Auto-Setup des CAN-Interface
+  auto_bitrate_detection: false    # Automatische Bitrate-Erkennung
+  
+  # Erweiterte Einstellungen
+  advanced:
+    sample_point: 0.875           # Sample-Point für CAN-Timing
+    sjw: 1                        # Sync Jump Width
+    restart_ms: 100               # Auto-Restart bei Bus-Off
+
+# ==================== HARDWARE BRIDGE CONFIGURATION ====================
+hardware_bridge:
+  # Service-Einstellungen
+  enabled: true
+  service_name: "enhanced_hardware_bridge"
+  
+  # Sensor-Konfiguration
+  sensors:
+    platform_position:
+      enabled: true
+      can_id: "0x123"
+      scaling_factor: 1.0
+      offset: 0.0
+      unit: "mm"
+    
+    tire_force:
+      enabled: true
+      can_id: "0x124"
+      scaling_factor: 1.0
+      offset: 0.0
+      unit: "N"
+    
+    static_weight:
+      enabled: true
+      can_id: "0x125"
+      scaling_factor: 1.0
+      offset: 0.0
+      unit: "N"
+  
+  # Datensammlung
+  data_collection:
+    buffer_size: 10000            # Puffergröße für Messdaten
+    sampling_rate: 1000           # Samples pro Sekunde
+    collection_duration: 30.0     # Standard-Testdauer
+    
+  # Qualitätskontrolle
+  quality_control:
+    min_samples: 1000             # Mindest-Samples pro Test
+    max_noise_level: 0.1          # Max. Rauschpegel
+    outlier_detection: true       # Ausreißer-Erkennung
+
+# ==================== SIMULATOR CONFIGURATION ====================
+simulator:
+  # Service-Einstellungen
+  enabled: true
+  service_name: "command_controlled_simulator"
+  
+  # Simulation-Parameter
+  simulation:
+    default_frequency: 10.0       # Hz
+    default_amplitude: 3.0        # mm
+    default_static_weight: 500.0  # N
+    noise_level: 0.05            # 5% Rauschen
+    
+  # Realistische Simulation
+  realistic_simulation:
+    enable_vehicle_dynamics: true
+    enable_road_surface_simulation: false
+    enable_weather_effects: false
+    
+  # Vordefinierte Szenarien
+  scenarios:
+    good_damping:
+      phase_shift: 45.0           # Grad
+      rigidity: 250.0            # N/mm
+      rfa_max: 15.0              # %
+      
+    poor_damping:
+      phase_shift: 25.0           # Grad
+      rigidity: 150.0            # N/mm
+      rfa_max: 35.0              # %
+      
+    excellent_damping:
+      phase_shift: 60.0           # Grad
+      rigidity: 300.0            # N/mm
+      rfa_max: 10.0              # %
+
+# ==================== PI PROCESSING CONFIGURATION ====================
+pi_processing:
+  # Service-Einstellungen
+  enabled: true
+  service_name: "pi_processing_service"
+  
+  # EGEA-Processing-Parameter
+  egea:
+    frequency_range:
+      min: 6.0                   # Hz
+      max: 25.0                  # Hz
+    
+    phase_threshold: 35.0        # Grad - EGEA-Kriterium
+    
+    # Erweiterte EGEA-Parameter
+    advanced:
+      delta_f: 5.0               # Hz
+      rfst_fmax: 25.0            # Hz
+      rfst_fmin: 25.0            # Hz
+      platform_amplitude: 3.0    # mm
+      
+  # Performance-Optimierung
+  performance:
+    enable_vectorized_processing: true
+    enable_caching: true
+    max_cache_size: 100
+    parallel_processing: true
+    
+  # Ergebnis-Konfiguration
+  results:
+    auto_save: true
+    save_raw_data: false         # Rohddaten speichern (viel Speicher)
+    save_processed_data: true    # Verarbeitete Daten speichern
+    compression: true            # Komprimierung für Speicherung
+
+# ==================== LOGGING CONFIGURATION ====================
+logging:
+  # Log-Level
+  level: "INFO"                  # DEBUG, INFO, WARNING, ERROR
+  
+  # File-Logging
+  file:
+    enabled: true
+    path: "/var/log/fahrwerkstester/pi_main.log"
+    max_size: "10MB"
+    backup_count: 5
+    
+  # Console-Logging
+  console:
+    enabled: true
+    level: "INFO"
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    
+  # Syslog-Integration
+  syslog:
+    enabled: true
+    facility: "local0"
+    
+  # Logger-spezifische Einstellungen
+  loggers:
+    "suspension_core": "INFO"
+    "backend": "INFO"
+    "hardware": "DEBUG"          # Hardware-Debugging
+    "asyncio": "WARNING"         # Asyncio-Noise reduzieren
+
+# ==================== MONITORING CONFIGURATION ====================
+monitoring:
+  # System-Monitoring
+  system_metrics:
+    enabled: true
+    interval: 60.0               # Sekunden
+    
+    # Zu überwachende Metriken
+    metrics:
+      - cpu_usage
+      - memory_usage
+      - disk_usage
+      - temperature
+      - network_status
+      - service_status
+      
+  # Performance-Monitoring
+  performance_metrics:
+    enabled: true
+    interval: 30.0
+    
+    # EGEA-spezifische Metriken
+    egea_metrics:
+      - processing_time
+      - calculation_accuracy
+      - cache_hit_rate
+      - error_rate
+      
+  # Alarme
+  alerts:
+    enabled: true
+    
+    # Schwellenwerte
+    thresholds:
+      cpu_usage: 85.0            # %
+      memory_usage: 80.0         # %
+      disk_usage: 90.0           # %
+      temperature: 70.0          # °C
+      error_rate: 5.0            # %
+      
+    # Benachrichtigungen
+    notifications:
+      mqtt: true                 # MQTT-Nachrichten
+      log: true                  # Log-Einträge
+      email: false               # E-Mail-Benachrichtigungen
+
+# ==================== DEPLOYMENT CONFIGURATION ====================
+deployment:
+  # Umgebung
+  environment: "production"      # development, staging, production
+  
+  # Auto-Update-Konfiguration
+  auto_update:
+    enabled: false               # Automatische Updates
+    check_interval: 86400        # Sekunden (24h)
+    update_channel: "stable"     # stable, beta, nightly
+    
+  # Backup-Konfiguration
+  backup:
+    enabled: true
+    interval: 86400              # Sekunden (24h)
+    retention_days: 7
+    
+    # Zu sichernde Daten
+    include:
+      - configuration
+      - test_results
+      - logs
+      
+  # Remote-Management
+  remote_management:
+    enabled: true
+    ssh_key_path: "/home/pi/.ssh/authorized_keys"
+    
+# ==================== SECURITY CONFIGURATION ====================
+security:
+  # Allgemeine Sicherheitseinstellungen
+  enable_security_features: true
+  
+  # Netzwerk-Sicherheit
+  network:
+    allowed_hosts:
+      - "localhost"
+      - "127.0.0.1"
+      - "192.168.1.0/24"        # Lokales Netzwerk
+      
+    blocked_ports: []
+    
+  # Datenschutz
+  privacy:
+    anonymize_logs: false
+    data_retention_days: 30
+    
+  # Authentifizierung
+  authentication:
+    mqtt_auth: false             # MQTT-Authentifizierung
+    api_keys: false              # API-Key-Authentifizierung
+
+# ==================== DEVELOPMENT CONFIGURATION ====================
+development:
+  # Debug-Einstellungen
+  debug:
+    enabled: false
+    verbose_logging: false
+    profiling: false
+    
+  # Testing-Einstellungen
+  testing:
+    mock_hardware: false         # Hardware-Mocking
+    deterministic_simulation: false
+    test_data_generation: false
+    
+  # Development-Tools
+  tools:
+    live_reload: false
+    hot_reload: false
+    development_server: false

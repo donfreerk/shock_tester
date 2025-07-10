@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: fahrwerkstester-common
+Version: 1.0.0
+Summary: Common library for Fahrwerkstester applications
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.8
+Requires-Dist: paho-mqtt>=1.6
+Requires-Dist: pyyaml>=5.4
+Requires-Dist: python-can>=4.0.0
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: pyserial>=3.5
+Dynamic: classifier
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
