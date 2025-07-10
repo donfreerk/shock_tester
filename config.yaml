@@ -1,0 +1,17 @@
+can:
+  baudrate: 1000000
+  interface: vcan0
+  protocol: eusama
+logging:
+  file: /var/log/raspi_can_simulator.log
+  level: INFO
+mqtt:
+  broker: localhost
+  password: null
+  port: 1883
+  username: null
+simulator:
+  cycle_duration: 30.0
+  damping_quality: good
+  generate_low_level: true
+  pause_between_cycles: 2.0

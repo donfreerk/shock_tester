@@ -1,0 +1,60 @@
+# requirements.txt - Fahrwerkstester Projekt
+# Alle Dependencies für das modulare Fahrwerkstester-System
+
+# ===== CORE DEPENDENCIES =====
+# MQTT-Kommunikation
+paho-mqtt>=1.6.0
+
+# CAN-Bus Interface
+python-can>=4.0.0
+
+# Mathematik und Signalverarbeitung
+numpy>=1.20.0
+scipy>=1.7.0
+
+# Konfiguration
+PyYAML>=5.4.0
+pydantic>=1.10.0
+
+# Serial-Kommunikation (für Hardware-Sensoren)
+pyserial>=3.5.0
+
+# ===== GUI DEPENDENCIES =====
+# Desktop GUI
+#tkinter  # (meist in Python Standard-Installation enthalten)
+matplotlib>=3.3.0
+
+# ===== DEVELOPMENT DEPENDENCIES =====
+# Testing
+pytest>=6.2.0
+pytest-asyncio>=0.18.0
+pytest-cov>=2.11.0
+
+# Code Quality
+black>=21.0.0
+flake8>=3.9.0
+isort>=5.8.0
+
+# Typing
+mypy>=0.812
+
+# ===== OPTIONAL DEPENDENCIES =====
+# Database (optional)
+# sqlite3  # (in Python Standard-Installation enthalten)
+
+# Logging (optional, erweitert)
+# colorlog>=6.6.0
+
+# Performance Monitoring (optional)
+# psutil>=5.8.0
+
+# ===== PLATFORM-SPECIFIC =====
+# Für Raspberry Pi CAN-Interface
+# can-utils  # (System-Package: sudo apt install can-utils)
+
+# Für Windows CAN-Simulation
+# python-can[serial]>=4.0.0
+
+# ===== VERSION CONSTRAINTS =====
+# Python Version Constraint (in setup.py oder pyproject.toml)
+# python_requires=">=3.8"

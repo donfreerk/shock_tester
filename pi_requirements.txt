@@ -1,0 +1,37 @@
+# requirements-pi.txt
+# Optimierte Dependencies für Raspberry Pi 3 Backend/Simulator
+# Python 3.12.10 + uv package manager
+
+# === CORE DEPENDENCIES ===
+# MQTT-Kommunikation zur Windows-GUI
+paho-mqtt>=1.6.1,<2.0.0
+
+# CAN-Bus Simulation und Interface
+python-can>=4.2.0,<5.0.0
+
+# Mathematische Berechnungen für Phasenverschiebung
+numpy>=1.24.0,<2.0.0
+scipy>=1.10.0,<2.0.0
+
+# Konfiguration und Validierung
+pyyaml>=6.0,<7.0.0
+pydantic>=2.0.0,<3.0.0
+
+# === HARDWARE INTERFACE ===
+# Serielle Kommunikation (falls Hardware-Sensoren verwendet)
+pyserial>=3.5,<4.0.0
+
+# GPIO-Zugriff auf Raspberry Pi (falls benötigt)
+RPi.GPIO>=0.7.1; platform_machine == "armv7l" or platform_machine == "aarch64"
+
+# === SYSTEM UTILITIES ===
+# System-Monitoring und Performance
+psutil>=5.9.0,<6.0.0
+
+# === ASYNC SUPPORT ===
+# Asynchrone MQTT-Kommunikation (optional, falls verwendet)
+asyncio-mqtt>=0.13.0,<1.0.0
+
+# === DEVELOPMENT & DEBUGGING ===
+# Nur für Development/Debugging (in Production entfernen)
+# structlog>=23.0.0,<24.0.0  # Strukturiertes Logging
