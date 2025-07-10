@@ -1,0 +1,79 @@
+# pi_processing_config.yaml
+# Konfiguration für Pi Processing Service
+
+# MQTT-Konfiguration
+mqtt:
+  broker: "localhost"
+  port: 1883
+  username: ""
+  password: ""
+  keepalive: 60
+  retry_attempts: 3
+  retry_interval: 5.0
+
+# Processing-Parameter
+processing:
+  # Heartbeat-Intervall in Sekunden
+  heartbeat_interval: 30.0
+  
+  # Queue-Parameter
+  max_queue_size: 100
+  processing_timeout: 120.0  # Sekunden
+  
+  # Phase-Shift-Parameter (EGEA-konform)
+  phase_shift:
+    min_calc_freq: 6.0    # Hz - Minimale Berechnungsfrequenz
+    max_calc_freq: 18.0   # Hz - Maximale Berechnungsfrequenz
+    delta_f: 5.0          # Hz - Frequenzbereich für φmin-Erkennung
+    phase_threshold: 35.0 # Grad - Minimale akzeptable Phasenverschiebung
+    
+  # Signalverarbeitung
+  signal_processing:
+    filter_enabled: true
+    lowpass_cutoff: 30.0  # Hz
+    highpass_cutoff: 1.0  # Hz
+    
+# Logging-Konfiguration
+logging:
+  level: "INFO"          # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_to_file: true
+  log_file: "/var/log/fahrwerkstester/pi_processing.log"
+  max_file_size: "10MB"
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Hardware-Spezifische Einstellungen für Pi
+hardware:
+  # CPU-Optimierungen
+  use_multiprocessing: false  # Für Pi besser single-threaded
+  max_workers: 1
+  
+  # Memory-Management
+  max_memory_usage: "512MB"
+  enable_swap: false
+  
+  # Performance-Monitoring
+  monitor_resources: true
+  resource_alert_threshold: 80  # Prozent
+
+# Service-Konfiguration
+service:
+  name: "pi_processing_service"
+  description: "Fahrwerkstester Pi Processing Service"
+  user: "pi"
+  group: "pi"
+  working_directory: "/home/pi/fahrwerkstester"
+  environment:
+    PYTHONPATH: "/home/pi/fahrwerkstester/common"
+    
+# Backup und Archivierung
+data:
+  # Rohdaten-Archivierung
+  archive_raw_data: true
+  archive_path: "/var/lib/fahrwerkstester/archive"
+  max_archive_size: "1GB"
+  
+  # Ergebnis-Persistierung
+  save_results: true
+  results_path: "/var/lib/fahrwerkstester/results"
+  retention_days: 30
